@@ -13,6 +13,6 @@ public class Le2272 {
     }
 
     public int largestVariance(String s) {
-
+        return 0;
     }
 }
