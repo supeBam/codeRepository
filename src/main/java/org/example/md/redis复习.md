@@ -32,3 +32,141 @@
 
 为什么6.0需要引入多线程：因为随着数据变大，影响redis的是网络I/O。所以在网络I/O中引入多线程处理（键值读写是单线程的，多线程只针对网络请求，所以不会出现线程不安全情况）   
 - **I/O多路复用模型本质还是同步I/O**，用户需要等待数据拷贝到内存中才能获取，并发量高的话，这可能比较耗时（所以瓶颈在于网络I/O）
+
+---
+### Redis 中跳表的实现原理是什么？（困难）
+**跳表**是一种**多链表**的数据结构，底层（level[0]层）保存了所有元素，每一层都是下一层的**子集**
+插入：从最高层开始查找要插入的位置（先找到第一个比它大的元素），**随机**决定插入的层数，最后插入并更新指针
+查找：从最高层开始查找要查找的位置，找到第一个比他大的元素后，再向下层找，依次类推，直到找到或遍历完，时间复杂度O(log n)
+删除：从最高层开始查找要删除的位置，找到后删除并更新**各层指针**
+
+**redis中跳表实现**
+```c
+typedef struct zskiplistNode {
+    //Zset 对象的元素值
+    sds ele;    // 主要用于存储数据
+    //元素权重值
+    double score;   // 分数
+    //后退指针
+    struct zskiplistNode *backward; // 指向当前节点的前一个节点
+  
+    //节点的level数组，保存每层上的前向指针和跨度
+    struct zskiplistLevel {
+        struct zskiplistNode *forward; // 指向当前节点下一层的节点
+        unsigned long span; // 记录当前节点和下一个节点之间的距离（需要多少步才能走到下个节点）
+    } level[];
+} zskiplistNode;
+
+```
+**redis7.0插入元素 随机层数源码**
+```c
+以下源码来自 redis7.0
+
+#define ZSKIPLIST_MAXLEVEL 32 /* Should be enough for 2^64 elements */
+#define ZSKIPLIST_P 0.25   /* Skiplist P = 1/4 */
+
+/* Returns a random level for the new skiplist node we are going to create.
+ * The return value of this function is between 1 and ZSKIPLIST_MAXLEVEL
+ * (both inclusive), with a powerlaw-alike distribution where higher
+ * levels are less likely to be returned. */
+int zslRandomLevel(void) {
+    static const int threshold = ZSKIPLIST_P*RAND_MAX; // 0.25 * 最大值
+    int level = 1; // 第一层开始，最底层是 0
+    while (random() < threshold) // 随机
+        level += 1;
+    return (level<ZSKIPLIST_MAXLEVEL) ? level : ZSKIPLIST_MAXLEVEL;
+}
+```
+
+### Redis 的 hash 是什么？ （中等）
+hash 是一种**键值对**的数据结构，用于存储对象，比如用户信息，商品信息 
+
+基本操作：
+```redis 
+hset key field value    
+hget key field
+hmset key field1 value1 field2 value2
+hmget key field1 field2
+hdel key field1 field2
+-- increment 整数值，给 字段field + 个整数
+hincrby key field increment
+```
+底层实现：
+- redis6.0之前： ziplist(压缩列表) + hashtable(哈希表)
+- redis7之后： listpack(紧凑列表) + hashtable(哈希表)，更换主要是解决ziplist的 级联更新 问题
+
+上述两个列表存在两个值，一个为key默认512，值value默认64。例如：hash-max-ziplist-entries(512大小) ，hash-max-ziplist-value (64大小)
+- 当hash < key && hash < value，使用列表存储
+- 当hash > key && hash > value，使用哈希表存储
+- 默认值可以修改，且使用hashtable存储后不会退化
+
+**hashtable代码：**
+```c
+// 
+typedef struct dictht {
+    //哈希表数组
+    dictEntry **table; // 指向哈希表数组，数组中每个元素都是指向 dictEntry 的指针
+    //哈希表大小
+    unsigned long size;  
+    //哈希表大小掩码，用于计算索引值
+    unsigned long sizemask;  // sizemask = size - 1。用于计算索引，index = hash & sizemask
+    //该哈希表已有的节点数量
+    unsigned long used;
+} dictht;
+
+// 哈希数组结构体
+typedef struct dictEntry {
+    //键值对中的键
+    void *key;
+  
+    //键值对中的值
+    union {
+        void *val;
+        uint64_t u64;
+        int64_t s64;
+        double d;
+    } v;
+    //指向下一个哈希表节点，形成链表
+    struct dictEntry *next;
+} dictEntry;
+
+```
+#### 渐进式 rehash
+**渐进式 rehash**：在rehash过程中，每次对hash表进行操作时，都会将hash表中的部分数据迁移到新的hash表中，而不是一次性迁移，避免阻塞redis
+存在两个哈希表，可以分1表和2表，1表数据太大则向2表迁移数据（2表默认空表），扩容步骤
+1. 创建一个比原hash表大2倍的hash表的2次方幂（结果是2次方幂且大于原表2倍）
+2. rehashindx(索引值) 从 -1 变为 0 。每次增删改查都会将数据从1表迁到2表（插入直接插到2表）。然后rehashindx + 1
+3. 重复步骤2，直到数据迁移完成，交换1，2表指针，设置rehashidx = -1
+
+#### 扩容条件
+**负载因子 = 哈希表已保存节点的数量 /  哈希表的大小**
+1. 负载因子 > 1，没有RDB快照或AOF重写的持久化机制，就会rehash操作
+2. 负载因子 > 5，无论有没有持久化机制，都会rehash操作
+3. 负载因子 < 0.1，进行缩容（缩容为新表是原表的最近一个2次方幂） 1000 (old)-> 1024 (new) 
+
+
+### Redis ZSet 的实现原理是什么？（简单）
+ZSet是一种有序集合，数据结构是 `跳表` + `哈希表`。常用于做排行榜，延迟队列，社交网络粉丝及关注数排序
+1. 跳表：用于排序，快速查找
+2. 哈希表：用于储存映射关系，快速查找
+
+**元素较少则使用压缩列表ziplist,须同时满足两个条件：**
+1. 元素个数 <= zset-max-ziplist-entries(默认128) 
+2. 元素成员们和分治长度 <= zset-max-ziplist-value(默认64)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
