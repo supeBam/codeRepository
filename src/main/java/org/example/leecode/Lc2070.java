@@ -9,10 +9,10 @@ import java.util.Map;
  * 2070. 每一个查询的最大美丽值
  * https://leetcode.cn/problems/most-beautiful-item-for-each-query/description/?envType=daily-question&envId=2025-03-09
  */
-public class Le2070 {
+public class Lc2070 {
 
     public static void main(String[] args) {
-        Le2070 le2070 = new Le2070();
+        Lc2070 le2070 = new Lc2070();
         int[][] array = {
                 {1, 2},
                 {3, 5},

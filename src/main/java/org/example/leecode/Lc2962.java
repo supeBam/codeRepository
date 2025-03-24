@@ -7,9 +7,9 @@ import java.util.Map;
  * https://leetcode.cn/problems/count-subarrays-where-max-element-appears-at-least-k-times/
  * 滑动窗口
  */
-public class Le2962 {
+public class Lc2962 {
     public static void main(String[] args) {
-        Le2962 le2962 = new Le2962();
+        Lc2962 le2962 = new Lc2962();
         System.out.println(le2962.countSubarrays(new int[]{1,3,2,3,3}, 2));
     }
 

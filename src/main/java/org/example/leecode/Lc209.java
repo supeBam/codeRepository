@@ -3,14 +3,14 @@ package org.example.leecode;
 /**
  * https://leetcode.cn/problems/minimum-size-subarray-sum/
  */
-public class Le209 {
+public class Lc209 {
 
     public static void main(String[] args) {
-        Le209 le209 = new Le209();
-        System.out.println(le209.minSubArrayLen(4, new int[]{1, 4, 4}));
+        Lc209 le209 = new Lc209();
+        System.out.println(le209.minSubArrayLcn(4, new int[]{1, 4, 4}));
     }
 
-    public int minSubArrayLen(int target, int[] nums) {
+    public int minSubArrayLcn(int target, int[] nums) {
         int ans = Integer.MAX_VALUE;
         int sum = 0;
         int l = 0;

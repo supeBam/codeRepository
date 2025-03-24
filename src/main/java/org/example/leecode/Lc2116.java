@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 // https://leetcode.cn/problems/check-if-a-parentheses-string-can-be-valid/description/?envType=daily-question&envId=2025-03-23
-public class Le2116 {
+public class Lc2116 {
     public static void main(String[] args) {
-        System.out.println(new Le2116().canBeValid("(((())", "111111"));
+        System.out.println(new Lc2116().canBeValid("(((())", "111111"));
     }
 
     //Can never be valid

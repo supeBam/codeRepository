@@ -5,10 +5,10 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 
 // https://leetcode.cn/problems/break-a-palindrome/ 题目
-public class Le1328 {
+public class Lc1328 {
     String palindrome;
     public static void main(String[] args) {
-        Le1328 le1328 = new Le1328();
+        Lc1328 le1328 = new Lc1328();
         System.out.println(le1328.breakPalindrome("abccba"));
     }
 

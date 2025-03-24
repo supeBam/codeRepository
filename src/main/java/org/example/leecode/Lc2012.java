@@ -5,10 +5,10 @@ package org.example.leecode;
  * https://leetcode.cn/problems/sum-of-beauty-in-the-array/?envType=daily-question&envId=2025-03-11
  * 2012. 数组美丽值求和
  */
-public class Le2012 {
+public class Lc2012 {
 
     public static void main(String[] args) {
-        Le2012 le2012 = new Le2012();
+        Lc2012 le2012 = new Lc2012();
 //        int[] ints = {2,4,6,4};
         int[] ints = {8, 3, 7, 8, 9, 10, 14};
 //        int[] ints = {6, 3, 3, 9, 9};

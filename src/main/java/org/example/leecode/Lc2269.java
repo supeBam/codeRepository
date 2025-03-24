@@ -4,10 +4,10 @@ package org.example.leecode;
  * https://leetcode.cn/problems/find-the-k-beauty-of-a-number/?envType=daily-question&envId=2025-03-10
  * 2269. 查找数组的第 K 大整数
  */
-public class Le2269 {
+public class Lc2269 {
 
     public static void main(String[] args) {
-        Le2269 le2269 = new Le2269();
+        Lc2269 le2269 = new Lc2269();
 //        int num = 430043;
         int num = 240;
         int k = 2;

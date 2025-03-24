@@ -6,7 +6,7 @@ import java.util.*;
  * https://leetcode.cn/problems/count-of-substrings-containing-every-vowel-and-k-consonants-i/?envType=daily-question&envId=2025-03-12
  * 3305. 元音辅音字符串计数 I
  */
-public class Le3305 {
+public class Lc3305 {
     /**
      * 至少问题
      * 10个学生至少20岁，3个学生至少21岁，恰好20岁的学生有多少个？
@@ -14,7 +14,7 @@ public class Le3305 {
      */
 
     public static void main(String[] args) {
-        Le3305 le3305 = new Le3305();
+        Lc3305 le3305 = new Lc3305();
         System.out.println(le3305.countOfSubstrings("ieaouqqieaouqq", 1));
         String s = "ieaouqqieaouqq";
         System.out.println(le3305.countOfSubstrings(s,1) - le3305.countOfSubstrings(s,2));

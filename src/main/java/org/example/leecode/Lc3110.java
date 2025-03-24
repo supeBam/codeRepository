@@ -1,6 +1,6 @@
 package org.example.leecode;
 
-public class Le3110 {
+public class Lc3110 {
 
     public int scoreOfString(String s) {
         int ans = 0;

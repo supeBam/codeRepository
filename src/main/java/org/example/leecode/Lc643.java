@@ -4,10 +4,10 @@ package org.example.leecode;
 /**
  * 643.子数组最大
  */
-public class Le643 {
+public class Lc643 {
 
     public static void main(String[] args) {
-        Le643 le643 = new Le643();
+        Lc643 le643 = new Lc643();
         System.out.println(le643.findMaxAverage(new int[]{1, 12, -5, -6, 50, 3}, 4));
     }
 

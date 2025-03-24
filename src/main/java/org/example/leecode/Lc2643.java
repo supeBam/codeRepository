@@ -4,7 +4,7 @@ package org.example.leecode;
 import java.util.Arrays;
 
 //https://leetcode.cn/problems/row-with-maximum-ones/description/?envType=daily-question&envId=2025-03-22
-public class Le2643 {
+public class Lc2643 {
 
     // 5s
     public int[] rowAndMaximumOnes(int[][] mat) {

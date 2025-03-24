@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 /**
  * https://leetcode.cn/problems/prime-in-diagonal/?envType=daily-question&envId=2025-03-18
  */
-public class Le2614 {
+public class Lc2614 {
     public static void main(String[] args) {
     }
 

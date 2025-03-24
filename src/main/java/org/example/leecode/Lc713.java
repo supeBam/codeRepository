@@ -4,13 +4,13 @@ package org.example.leecode;
  * https://leetcode.cn/problems/subarray-product-less-than-k/description/
  * 滑动窗口练习
  */
-public class Le713 {
+public class Lc713 {
 
     public static void main(String[] args) {
 
     }
 
-    public int numSubarrayProductLessThanK(int[] nums, int k) {
+    public int numSubarrayProductLcssThanK(int[] nums, int k) {
         if (k < 1){
             return 0;
         }

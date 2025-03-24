@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 // https://leetcode.cn/problems/count-prefixes-of-a-given-string/description/?envType=daily-question&envId=2025-03-24
-public class Le2255 {
+public class Lc2255 {
 
     public int countPrefixes(String[] words, String s) {
         Set<String> set = new HashSet<>();

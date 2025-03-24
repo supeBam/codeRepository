@@ -8,13 +8,13 @@ import java.util.List;
 /**
  * 标签： 回溯算法 ，子集回溯
  */
-public class Le131 {
+public class Lc131 {
     List<List<String>> ans = new ArrayList<>();
     List<String> path = new ArrayList<String>();
     String s;
 
     public static void main(String[] args) {
-        Le131 le131 = new Le131();
+        Lc131 le131 = new Lc131();
         le131.partition("aab");
     }
 

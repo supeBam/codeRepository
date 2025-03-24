@@ -6,7 +6,7 @@ package org.example.leecode;
  * https://leetcode.cn/problems/maximum-number-of-vowels-in-a-substring-of-given-length/description/
  * 滑动窗口
  */
-public class Le1456 {
+public class Lc1456 {
 
     public static void main(String[] args) {
 

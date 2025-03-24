@@ -3,10 +3,10 @@ package org.example.leecode;
 /**
  *https://leetcode.cn/problems/check-balanced-string/?envType=daily-question&envId=2025-03-14
  */
-public class Le3340 {
+public class Lc3340 {
 
     public static void main(String[] args) {
-        Le3340 le3340 = new Le3340();
+        Lc3340 le3340 = new Lc3340();
         System.out.println(le3340.isBalanced("24123"));
     }
     public boolean isBalanced(String num) {

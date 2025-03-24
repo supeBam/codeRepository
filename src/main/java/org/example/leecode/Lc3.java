@@ -9,7 +9,7 @@ import java.util.Set;
  * https://leetcode.cn/problems/longest-substring-without-repeating-characters/
  * 滑动窗口练习
  */
-public class Le3 {
+public class Lc3 {
 
 
     public int lengthOfLongestSubstring(String s) {

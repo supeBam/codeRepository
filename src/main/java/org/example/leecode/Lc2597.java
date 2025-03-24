@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 // https://leetcode.cn/problems/the-number-of-beautiful-subsets/description/
-public class Le2597 {
+public class Lc2597 {
 
     int ans = -1; // 去除空子集
 
     public static void main(String[] args) {
-        Le2597 le2597 = new Le2597();
+        Lc2597 le2597 = new Lc2597();
         int i = le2597.beautifulSubsets(new int[]{1, 2, 3, 4, 5}, 3);
         System.out.println(i);
     }

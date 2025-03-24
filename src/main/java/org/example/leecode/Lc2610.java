@@ -5,10 +5,10 @@ import java.util.*;
 /**
  * https://leetcode.cn/problems/convert-an-array-into-a-2d-array-with-conditions/description/?envType=daily-question&envId=2025-03-19
  */
-public class Le2610 {
+public class Lc2610 {
 
     public static void main(String[] args) {
-        Le2610 le2610 = new Le2610();
+        Lc2610 le2610 = new Lc2610();
         System.out.println(le2610.findMatrix3(new int[]{1, 3, 4, 1, 2, 3, 1}));
     }
 

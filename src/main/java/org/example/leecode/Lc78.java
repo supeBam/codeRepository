@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 标签：回溯算法，子集回溯
  */
-public class Le78 {
+public class Lc78 {
 
     List<List<Integer>> ans = new ArrayList<>();
     List<Integer> path = new ArrayList<Integer>();
@@ -16,7 +16,7 @@ public class Le78 {
 
 
     public static void main(String[] args) {
-        Le78 le78 = new Le78();
+        Lc78 le78 = new Lc78();
         le78.subsets(new int[]{1,2,3});
     }
 
