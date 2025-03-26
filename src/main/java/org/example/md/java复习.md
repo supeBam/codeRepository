@@ -310,3 +310,143 @@ public class Main {
     }
 }
 ```
+---
+###  谈谈你了解的最常见的几种设计模式，说说他们的应用场景
+- 单例模式：确保某个类全局只有**一个实例**，并提供一个全局访问点。（常用于 配置管理器、全局缓存、数据库连接池）
+- 工厂模式：定义一个创建对象的接口，让子类决定实例化哪一个类。工厂方法使一个类的实例化延迟到其子类。（常用于 日志记录器、数据库访问、XML解析器）
+- 策略模式：定义一系列算法，并将每一个算法封装起来，使它们可以互相替换。（常用于 优化算法、算法可扩展、算法可替换）
+- 模板方法模式：定义一个操作中的算法的骨架(类似于插槽)，而将一些步骤延迟到子类中
+- 建造者模式：快速构建复杂的类 (当一个类的构造函数参数有多个，而且这些参数有些是可选时，可以按需构造)
+
+**一般情况下会多个设计模式一起使用：**例如：支付
+1. 因为支付方式有多种：微信、支付宝、银行卡等等，所以可以使用`策略模式`，根据不同的支付方式，选择不同的支付策略
+2. 每个支付策略中又有一些重复的逻辑（例如：写日志，数据校验等等），可以使用`模板方法模式`抽出核心逻辑
+3. `使用工厂模式`，根据不同的支付方式，选择不同的工厂，工厂中创建对应的支付策略
+
+### 你认为好的代码应该是怎样的？
+1. **可读性**：代码可读性高，逻辑清晰，容易理解，方便维护
+2. **可扩展性**：代码结构清晰，模块化，容易扩展新的功能
+3. **高内聚低耦合**：内部模块职责单一，不同模块依赖关系松散
+4. **代码规范**：代码风格统一，命名规范，注释清晰
+5. **错误处理**：提供清晰的错误信息，并有良好的日志习惯，便于定位问题
+6. **性能优化**：代码性能优化，避免不必要的计算和资源浪费
+7. **测试**：代码容易测试，可以确保代码的正确性和稳定性
+
+###  工厂模式和抽象工厂模式有什么区别？
+**工厂模式：** 定义一个创建对象的接口，让子类决定实例化哪一个类。工厂方法使一个类的实例化延迟到其子类。
+**抽象工厂模式：** 提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们具体的类。
+
+`工厂方法模式`是一个超级工厂，里面什么的生产，超级工厂就是抽象类（里面有需要生产的产品（产品实现方法））。你需要什么产品就需要造什么工厂（工厂的具体实现）
+
+`抽象工厂模式`是好比你需要造一辆车，需要制作车的车窗，车轮，发动机等等部件（这就是抽象产品），这些产品怎么制作的有自己方式（具体产品的实现，也就是实现产品接口），
+工厂就是负责造这些零件(抽象工厂（也就是抽象工厂里面有这个实现方法）)，然后每个车都有自己的品牌，就好像宝马，奔驰，宾利等等，每个品牌都有自己的工厂（这就是具体工厂（实现了抽象工厂的接口））
+
+**抽象工厂模式代码例子**
+`抽象产品`
+```java
+/**
+ * 车胎
+ */
+public interface Tyre {
+    public void makeTyre();
+}
+/**
+ * 车窗
+ */
+public interface CarWindow {
+    public void makeWindow();
+}
+```
+`具体产品实现`
+```java
+/**
+ * 车胎具体实现
+ */
+public class ConcreteTyre implements Tyre{
+    @Override
+    public void makeTyre() {
+        System.out.println("制作轮胎");
+    }
+}
+/**
+ * 车窗具体实现
+ */
+public class ConcreteCarWindow implements CarWindow{
+    @Override
+    public void makeWindow() {
+        System.out.println("制作车窗");
+    }
+}
+```
+`抽象工厂`
+```java
+/**
+ * 造车工厂
+ * 只关注需要什么，不关注生产细节
+ */
+public interface CarFactory {
+
+    // 造车窗
+    CarWindow createWindow();
+
+    // 造轮胎
+    Tyre createTyre();
+}
+```
+`每个车品牌的工厂`，每个厂有自己的特色
+```java
+/**
+ * 宾利工厂
+ */
+public class BentleyFactory implements CarFactory{
+    @Override
+    public CarWindow createWindow() {
+        System.out.println("贴个宾利标");
+        return new ConcreteCarWindow();
+    }
+
+    @Override
+    public Tyre createTyre() {
+        System.out.println("贴个宾利标");
+        return new ConcreteTyre();
+    }
+}
+/**
+ * 宝马工厂
+ */
+public class BMWFactory implements CarFactory{
+    @Override
+    public CarWindow createWindow() {
+        return new ConcreteCarWindow();
+    }
+
+    @Override
+    public Tyre createTyre() {
+        return new ConcreteTyre();
+    }
+}
+```
+`测试类`
+```java
+public class Main {
+    public static void main(String[] args) {
+        // 创建宾利工厂
+        BentleyFactory bentleyFactory = new BentleyFactory();
+        // 制作轮胎
+        Tyre tyre = bentleyFactory.createTyre();
+        tyre.makeTyre();
+        // 制作车窗
+        CarWindow window = bentleyFactory.createWindow();
+        window.makeWindow();
+
+        // 创建宝马工厂
+        BMWFactory bmwFactory = new BMWFactory();
+        Tyre tyre1 = bmwFactory.createTyre();
+        tyre1.makeTyre();
+        CarWindow window1 = bmwFactory.createWindow();
+        window1.makeWindow();
+    }
+}
+```
+**总结：** 工厂方法是一个单独种类的工厂，例如我是水果工厂，我需要什么水果，就创建什么水果工厂（例如苹果工厂，梨子工厂等等）。
+而抽象工厂是一个生产族群的，例如 梨子手机工厂就可以生产 梨子手机电池、屏幕、主板等等(如果我添加一个新零件，例如扩音器，需要大幅修改。如果添加个菠萝手机则方便很多)
