@@ -642,4 +642,56 @@ Map:
 1. 创建一个新的数组，大小为原数组的两倍。
 2. 遍历原数组，将每个键值对重新计算哈希值，并插入到新数组中。
 3. 将新数组赋值给原数组。
+---
 
+### 你了解 Java 线程池的原理吗？
+线程池是一种用于管理和复用线程的机制，它通过创建一定数量的线程来执行任务，避免了频繁创建和销毁线程的开销。
+```java
+// 线程池源码 （七大参数）
+public ThreadPoolExecutor(int corePoolSize,
+                              int maximumPoolSize,
+                              long keepAliveTime,
+                              TimeUnit unit,
+                              BlockingQueue<Runnable> workQueue,
+                              ThreadFactory threadFactory,
+                              RejectedExecutionHandler handler) {
+        if (corePoolSize < 0 ||
+            maximumPoolSize <= 0 ||
+            maximumPoolSize < corePoolSize ||
+            keepAliveTime < 0)
+            throw new IllegalArgumentException();
+        if (workQueue == null || threadFactory == null || handler == null)
+            throw new NullPointerException();
+        this.corePoolSize = corePoolSize;
+        this.maximumPoolSize = maximumPoolSize;
+        this.workQueue = workQueue;
+        this.keepAliveTime = unit.toNanos(keepAliveTime);
+        this.threadFactory = threadFactory;
+        this.handler = handler;
+
+        String name = Objects.toIdentityString(this);
+        this.container = SharedThreadContainer.create(name);
+    }
+```
+- corePoolSize: 核心线程数，线程池中常驻的线程数量。
+- maximumPoolSize: 最大线程数，线程池中允许存在的最大线程数量。
+- keepAliveTime: 空闲线程的存活时间，当线程池中的线程数量超过 corePoolSize 时，多余的线程在空闲时间超过 keepAliveTime 后会被终止。
+- unit: keepAliveTime 的时间单位。
+- workQueue: 任务队列，用于存放等待执行的任务。
+- threadFactory: 线程工厂，用于创建新线程。
+- handler: 拒绝策略，当线程池和任务队列都满了时，如何处理新任务。
+
+### 你使用过哪些 Java 并发工具类？
+- ConcurrentHashMap: 线程安全的哈希表，支持并发访问。
+- AtomicInteger: 线程安全的整数，支持原子操作。
+- BlockingQueue: 支持阻塞的队列，用于线程间通信。
+- CountDownLatch: 允许一个或多个线程等待其他线程完成操作。
+- CyclicBarrier: 允许一组线程互相等待，直到所有线程都到达某个屏障点。
+- Semaphore: 计数信号量，用于控制同时访问某个资源的线程数量。
+
+
+### 什么是 Java 的 CAS（Compare-And-Swap）操作？
+cas是一种**硬件级别的原子操作**，通过 比较、 交换 来实现线程安全。
+- 比较：比较当前内存中的值和预期值是否相等。
+- 交换：如果相等，则将内存中的值更新为新值；如果不相等，则不做任何操作。
+- 失败重试：如果比较失败，则循环执行比较和交换操作，直到成功为止。
