@@ -519,8 +519,10 @@ public class Main {
 |  方法  | 接口中方法默认为public、abstract(java8后有default方法和静态方法) |            可以有abstract方法和具体实现            |
 
 ### JDK 动态代理和 CGLIB 动态代理有什么区别？
+
 **JDK 动态代理：** JDK 动态代理是 Java 语言内置的，不需要额外的依赖。它通过**反射机制**实现，只能代理实现了接口的类。
 **CGLIB 动态代理：** CGLIB 动态代理是第三方库，需要额外的依赖。它通过**字节码生成技术**实现，可以代理没有实现接口的类。
+
 ```java
 public interface GoService {
 
@@ -528,55 +530,60 @@ public interface GoService {
 }
 
 public class GoServiceImpl implements GoService {
-  @Override
-  public void go() {
-    System.out.println("GoService go");
-  }
+    @Override
+    public void go() {
+        System.out.println("GoService go");
+    }
 }
+
 /**
  * 代理类
  */
 public class ServiceInvocationHandler implements InvocationHandler {
-  // 代理对象
-  private final Object target;
+    // 代理对象
+    private final Object target;
 
-  public ServiceInvocationHandler(Object target) {
-    this.target = target;
-  }
+    public ServiceInvocationHandler(Object target) {
+        this.target = target;
+    }
 
-  @Override
-  public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-    System.out.println("before invoke");
-    Object result = method.invoke(target, args);
-    System.out.println("after invoke");
-    return result;
-  }
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("before invoke");
+        Object result = method.invoke(target, args);
+        System.out.println("after invoke");
+        return result;
+    }
 }
+
 /**
  * 代理测试类
  */
 public class test {
-  public static void main(String[] args) {
-    GoServiceImpl target = new GoServiceImpl();
-    GoService goService = (GoService) Proxy.newProxyInstance(
-            target.getClass().getClassLoader(),
-            target.getClass().getInterfaces(),
-            new ServiceInvocationHandler(target));
-    goService.go();
-  }
+    public static void main(String[] args) {
+        GoServiceImpl target = new GoServiceImpl();
+        GoService goService = (GoService) Proxy.newProxyInstance(
+                target.getClass().getClassLoader(),
+                target.getClass().getInterfaces(),
+                new ServiceInvocationHandler(target));
+        goService.go();
+    }
 }
 ```
 
 ### 你使用过 Java 的反射机制吗？如何应用反射？
-**反射机制：** 反射机制是 Java 语言的一种特性，它允许程序在运行时获取类的信息，例如类的成员变量、方法、构造函数等，并且可以在**运行时**动态地创建对象、调用方法、访问成员变量等。
+
+**反射机制：** 反射机制是 Java 语言的一种特性，它允许程序在运行时获取类的信息，例如类的成员变量、方法、构造函数等，并且可以在*
+*运行时**动态地创建对象、调用方法、访问成员变量等。
 
 **反射举例：** Spring 使用反射机制来**读取**和**解析**配置文件
 
 **反射优化：** 反射会消耗大量性能，业务中尽量少使用，可以**缓存**第一次反射结果
 
 **反射的主要功能**
+
 - 创建对象：class.newInstance()(过时) 或 Constructor.newInstance()
-- 获取属性：Field 
+- 获取属性：Field
 - 获取方法：Method
 - 获取构造函数：Constructor
 
@@ -599,14 +606,20 @@ Object result = method.invoke(obj, "param");
 
 // 获取属性
 Field field = clazz.getField("myField");
-field.setAccessible(true); // 允许访问 private 字段
+field.
+
+setAccessible(true); // 允许访问 private 字段
+
 Object value = field.get(obj);
-field.set(obj, newValue);
+field.
+
+set(obj, newValue);
 ```
 
 ---
 
 ### 说说 Java 中 HashMap 的原理？
+
 HashMap 是 Java 中常用的集合类，它基于哈希表实现，提供了快速的查找、插入和删除操作。
 HashMap 的原理是使用哈希函数将键值对映射到哈希表中，然后通过哈希表中的索引来快速定位键值对。
 
@@ -615,21 +628,26 @@ Java 8 之后 是 **数组** + **链表** + **红黑树** （当链表长度 >= 
 HashMap 默认初始容量 16， 负载因子为 0.75，当存储元素数量超过 16 * 0.75 时，会进行扩容，扩容为原来的 2 倍
 
 ### Java 中有哪些集合类？请简单介绍
+
 List:
+
 - ArrayList: 基于动态数组实现，支持随机访问，插入和删除操作的时间复杂度为 O(n)。
 - LinkedList: 基于双向链表实现，支持高效的插入和删除操作，但不支持随机访问，访问操作的时间复杂度为 O(n)。
 - Vector: 类似于 ArrayList，但线程安全，但性能较差。
 
 Set:
+
 - HashSet: 基于哈希表实现，不允许重复元素，支持快速查找。
 - LinkedHashSet: 基于链表和哈希表实现，允许重复元素，支持快速查找，同时保持插入顺序。
 - TreeSet: 基于红黑树实现，不允许重复元素，支持快速查找，同时保持排序顺序。
 
 Queue:
+
 - PriorityQueue: 基于堆实现，支持优先级队列，按照元素的优先级进行排序。
 - LinkedList: 基于双向链表实现，支持队列操作，包括入队、出队、查看队首元素等。
 
 Map:
+
 - HashMap: 基于哈希表实现，支持快速查找、插入和删除操作。
 - LinkedHashMap: 基于链表和哈希表实现，支持快速查找、插入和删除操作，同时保持插入顺序。
 - TreeMap: 基于红黑树实现，支持快速查找、插入和删除操作，同时保持排序顺序。
@@ -637,51 +655,59 @@ Map:
 - ConcurrentHashMap: 类似于 HashMap，但线程安全，支持并发访问，不允许键或值为 null。
 
 ### Java 中 HashMap 的扩容机制是怎样的？
+
 负载因子 决定 HashMap 的扩容 （默认负载因子 0.75 ，默认初始容量 16， 当 16 * 0.75 = 12， 当容量 > 12 时， 容量扩 2 倍）
 扩容机制： 定位数组的位置 （(数组长度 - 1）& 哈希值 )，如果出现哈希冲突，则使用链表或红黑树解决冲突
+
 1. 创建一个新的数组，大小为原数组的两倍。
 2. 遍历原数组，将每个键值对重新计算哈希值，并插入到新数组中。
 3. 将新数组赋值给原数组。
+
 ---
 
 ### 你了解 Java 线程池的原理吗？
+
 线程池是一种用于管理和复用线程的机制，它通过创建一定数量的线程来执行任务，避免了频繁创建和销毁线程的开销。
+
 ```java
 // 线程池源码 （七大参数）
 public ThreadPoolExecutor(int corePoolSize,
-                              int maximumPoolSize,
-                              long keepAliveTime,
-                              TimeUnit unit,
-                              BlockingQueue<Runnable> workQueue,
-                              ThreadFactory threadFactory,
-                              RejectedExecutionHandler handler) {
-        if (corePoolSize < 0 ||
+                          int maximumPoolSize,
+                          long keepAliveTime,
+                          TimeUnit unit,
+                          BlockingQueue<Runnable> workQueue,
+                          ThreadFactory threadFactory,
+                          RejectedExecutionHandler handler) {
+    if (corePoolSize < 0 ||
             maximumPoolSize <= 0 ||
             maximumPoolSize < corePoolSize ||
             keepAliveTime < 0)
-            throw new IllegalArgumentException();
-        if (workQueue == null || threadFactory == null || handler == null)
-            throw new NullPointerException();
-        this.corePoolSize = corePoolSize;
-        this.maximumPoolSize = maximumPoolSize;
-        this.workQueue = workQueue;
-        this.keepAliveTime = unit.toNanos(keepAliveTime);
-        this.threadFactory = threadFactory;
-        this.handler = handler;
+        throw new IllegalArgumentException();
+    if (workQueue == null || threadFactory == null || handler == null)
+        throw new NullPointerException();
+    this.corePoolSize = corePoolSize;
+    this.maximumPoolSize = maximumPoolSize;
+    this.workQueue = workQueue;
+    this.keepAliveTime = unit.toNanos(keepAliveTime);
+    this.threadFactory = threadFactory;
+    this.handler = handler;
 
-        String name = Objects.toIdentityString(this);
-        this.container = SharedThreadContainer.create(name);
-    }
+    String name = Objects.toIdentityString(this);
+    this.container = SharedThreadContainer.create(name);
+}
 ```
+
 - corePoolSize: 核心线程数，线程池中常驻的线程数量。
 - maximumPoolSize: 最大线程数，线程池中允许存在的最大线程数量。
-- keepAliveTime: 空闲线程的存活时间，当线程池中的线程数量超过 corePoolSize 时，多余的线程在空闲时间超过 keepAliveTime 后会被终止。
+- keepAliveTime: 空闲线程的存活时间，当线程池中的线程数量超过 corePoolSize 时，多余的线程在空闲时间超过 keepAliveTime
+  后会被终止。
 - unit: keepAliveTime 的时间单位。
 - workQueue: 任务队列，用于存放等待执行的任务。
 - threadFactory: 线程工厂，用于创建新线程。
 - handler: 拒绝策略，当线程池和任务队列都满了时，如何处理新任务。
 
 ### 你使用过哪些 Java 并发工具类？
+
 - ConcurrentHashMap: 线程安全的哈希表，支持并发访问。
 - AtomicInteger: 线程安全的整数，支持原子操作。
 - BlockingQueue: 支持阻塞的队列，用于线程间通信。
@@ -689,9 +715,37 @@ public ThreadPoolExecutor(int corePoolSize,
 - CyclicBarrier: 允许一组线程互相等待，直到所有线程都到达某个屏障点。
 - Semaphore: 计数信号量，用于控制同时访问某个资源的线程数量。
 
-
 ### 什么是 Java 的 CAS（Compare-And-Swap）操作？
+
 cas是一种**硬件级别的原子操作**，通过 比较、 交换 来实现线程安全。
+
 - 比较：比较当前内存中的值和预期值是否相等。
 - 交换：如果相等，则将内存中的值更新为新值；如果不相等，则不做任何操作。
 - 失败重试：如果比较失败，则循环执行比较和交换操作，直到成功为止。
+
+---
+
+### 说说 AQS 吧？
+
+什么是AQS?
+AQS（AbstractQueuedSynchronizer）是 Java 中一个用于实现锁和同步器的框架，它提供了一种通用的机制来管理线程的同步状态和阻塞/唤醒线程。
+
+AQS 的核心思想：使用一个**共享的同步状态**来表示线程的同步状态，通过**原子操作**来修改同步状态，并通过**队列**来管理等待的线程。
+
+### Synchronized 和 ReentrantLock 有什么区别？
+
+|      | Synchronized | ReentrantLock  |
+|------|--------------|----------------|
+|      | 关键字          | 包下的类           |
+| 实现机制 | JVM 层面实现     | API 层面实现       |
+| 锁的释放 | 自动释放         | 手动释放（unlock()） |
+| 锁类型  | 非公平锁         | 非公平锁&公平锁       |
+
+### Java 中 volatile 关键字的作用是什么？
+volatile 是 Java 中的一种轻量级同步机制，用于保证变量的 **可见性**和 **禁止指令重排**(有序性)。
+1. 可见性：
+   - 当一个线程修改了 volatile 变量的值，这个新值会立即被刷新到主内存中，而不是仅停留在当前线程的工作内存中。
+   - 其他线程在读取该 volatile 变量时，会直接从主内存中获取最新值，而不是使用自己工作内存中的缓存值。
+2. 禁止指令重排：volatile 变量的读写操作前后会插入内存屏障，防止 JVM 和处理器对其进行重排序优化。
+ps：内存屏障是CPU或编译器在对内存随机访问的操作中的一个同步点，使得此点之前的所有读写操作都执行后才可以开始执行此点之后的操作（代码按顺序执行）
+
