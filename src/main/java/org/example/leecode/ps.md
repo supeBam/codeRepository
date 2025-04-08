@@ -6,3 +6,7 @@
 5. 困难题尽量写
 6. AC后看题解，看题解后，再写一遍（可能有更好的思路）
 7. 部分题可能没有前置知识，需要周末统一学习前置知识
+
+灵神的作业单
+
+https://github.com/EndlessCheng/codeforces-go/blob/master/leetcode/README.md
