@@ -6,29 +6,35 @@ import java.util.List;
 public class Lc22 {
 
     List<String> ans = new ArrayList<>();
-    char[] c = new char[]{'(', ')'};
+    char[] c;
+    int n;
+    int len;
 
     public List<String> generateParenthesis(int n) {
-        int len = n * 2;
-        dfs(0, n, len, 0, 0);
+        this.len = n * 2;
+        this.n = n;
+        c = new char[len];
+        dfs(0, 0);
         return ans;
     }
 
-    StringBuilder sb = new StringBuilder();
 
-    public void dfs(int i, int n, int len, int l, int r) {
-        int d = len - sb.length();
-        // 左括号 < 右括号 或则 左括号个数 > n
-
-        if (d == 0) {
-            ans.add(sb.toString());
+    public void dfs(int i, int left) {
+        // 边界条件
+        if (i == len){
+            ans.add(new String(c));
             return;
         }
-        // 不选
-        dfs(i, n, len, l, r);
-        // 选
-        sb.append(c[i % 2]);
-        dfs(i + 1, n, len - 1, );
+        // 如果 左括号个数 < n; 选左括号
+        if (left < n) {
+            c[i] = '(';
+            dfs(i + 1, left + 1);
+        }
 
+        // 如果 右括号个数 < 左括号 选右括号
+        if (i - left < left) {
+            c[i] = ')';
+            dfs(i + 1, left);
+        }
     }
 }
