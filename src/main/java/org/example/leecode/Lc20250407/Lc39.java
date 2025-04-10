@@ -1,9 +1,15 @@
 package org.example.leecode.Lc20250407;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Lc39 {
+    public static void main(String[] args) {
+        Lc39 lc39 = new Lc39();
+        System.out.println(lc39.combinationSum(new int[]{2, 3, 6, 7}, 7));
+    }
+
     List<List<Integer>> ans = new ArrayList<>();
     List<Integer> path = new ArrayList<>();
     int[] candidates;
@@ -14,7 +20,8 @@ public class Lc39 {
         this.target = target;
         this.candidates = candidates;
         this.n = candidates.length;
-        dfs(n - 1, 0);
+        Arrays.sort(candidates);
+        dfs(0, 0);
         return ans;
     }
 
@@ -22,22 +29,23 @@ public class Lc39 {
         // 还差多少
         int d = target - t;
         // 剪枝，如果 d < 0则返回(超标了)，如果 i 前面的总和 < d， 则返回
-        // (i - 1)
-        if (d < 0){
+        if (d < 0 || i >= n) {
             return;
         }
         // 边界条件
-        if (d == 0){
+        if (d == 0) {
             ans.add(new ArrayList<>(path));
+            path.clear();
             return;
         }
-        // 选自己
-        path.add(i);
-        dfs(i, t + candidates[i]);
-        // 选下一个
-        path.add(i);
-        dfs(i - 1, t + candidates[i]);
 
-
+        int candidate = candidates[i];
+        // 选的下则选自己
+        if (d >= candidate){
+            path.add(candidate);
+            dfs(i, t + candidate);
+        }
+        // 选不下选下一个
+        dfs(i + 1, t);
     }
 }
