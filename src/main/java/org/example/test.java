@@ -7,5 +7,7 @@ public class test {
         System.out.println(1101 >> 1);
 
         // 测试git提交
+
+        System.out.println(96 + '0');
     }
 }
