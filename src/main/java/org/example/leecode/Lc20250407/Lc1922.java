@@ -1,6 +1,5 @@
 package org.example.leecode.Lc20250407;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 
 // https://leetcode.cn/problems/count-good-numbers/?envType=daily-question&envId=2025-04-13
 public class Lc1922 {
