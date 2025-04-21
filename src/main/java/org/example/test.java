@@ -6,7 +6,7 @@ public class test {
         System.out.println(1 << 4);
         System.out.println(1101 >> 1);
 
-        // 测试git提交
+        // 测试git提交， 测试
 
         System.out.println(96 + '0');
     }
