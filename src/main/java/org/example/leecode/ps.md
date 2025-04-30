@@ -12,7 +12,3 @@
 https://github.com/EndlessCheng/codeforces-go/blob/master/leetcode/README.md
 
 
-### 回溯三问
-1. 当前操作？ 例子：枚举 path[i] 是左括号 还是 右括号
-2. 子问题是什么？  例子： 构造字符串 >= i 的部分
-3. 下一个子问题是什么？  例子： 构造字符串 >= i + 1 的部分
