@@ -96,4 +96,24 @@ public class Week447 {
         return new int[]{};
     }
 
+    public void backTrack(int[] nums, int k, int start, List<List<Integer>> ans, List<Integer> path, boolean[] used) {
+        if (k == 0) {
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = start; i < nums.length; i++) {
+            if (used[i]) {
+                continue;
+            }
+            if (k % nums[i] == 0) {
+                path.add(nums[i]);
+                used[i] = true;
+                backTrack(nums, k / nums[i], i + 1, ans, path, used);
+                used[i] = false;
+                path.remove(path.size() - 1);
+            }
+
+        }
+    }
+
 }
