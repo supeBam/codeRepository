@@ -14,5 +14,7 @@ public class test {
 
         int[]nums = new int[]{1,3,2,1,2,5};
         System.out.println(Arrays.stream(nums).distinct().count());
+
+        System.out.println('9' - '0' + '1');
     }
 }
