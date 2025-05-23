@@ -5,7 +5,7 @@ import java.util.*;
 public class Lc3355 {
 
     public boolean isZeroArray(int[] nums, int[][] queries) {
-        // 标记数组， 找到queries的前后坐标, 标记每一段的
+        // 标记数组， 找到queries的前后坐标, 标记每一段的， 这是差分数组
         int[] d = new int[nums.length + 1];
         for (int[] q : queries) {
             int l = q[0];
