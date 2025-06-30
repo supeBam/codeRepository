@@ -34,6 +34,13 @@
             <artifactId>lombok</artifactId>
             <version>1.18.4</version>
         </dependency>
+        <!-- 测试使用jsoup解析html -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.10.2</version>
+        </dependency>
+
 
 
     </dependencies>
